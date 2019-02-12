@@ -22,7 +22,7 @@ public class SendGridNotificationService implements EmailNotificationService {
         LOGGER.info("Sending email notification {} {}", uri, service);
     }
 
-    static EmailNotificationService create() {
+    public static EmailNotificationService create() {
         SendGrid sendGrid = new SendGrid(System.getenv("SENDGRID_API_KEY"));
         return new SendGridNotificationService(sendGrid);
     }

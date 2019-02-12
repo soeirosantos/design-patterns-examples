@@ -18,7 +18,7 @@ public class DefaultAuditService implements AuditService {
 
     private final Datastore datastore;
 
-    DefaultAuditService(Datastore datastore) {
+    public DefaultAuditService(Datastore datastore) {
         this.datastore = datastore;
     }
 

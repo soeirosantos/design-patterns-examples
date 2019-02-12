@@ -28,7 +28,7 @@ public class PublishService {
     private final GatewayClient gatewayClient;
     private final EmailNotificationService notificationService;
 
-    public PublishService(ArticleDao articleDao, AuditService auditService, SecurityContext securityContext,
+    PublishService(ArticleDao articleDao, AuditService auditService, SecurityContext securityContext,
                           GatewayClient gatewayClient, EmailNotificationService notificationService) {
         this.articleDao = articleDao;
         this.auditService = auditService;
