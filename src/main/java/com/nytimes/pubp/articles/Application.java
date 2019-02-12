@@ -39,22 +39,14 @@ public class Application {
     private static HttpServer createServer() {
 
         String environment = System.getenv("environment");
-
-        ArticleDao articleDao = new ArticleDao();
-        AuditService auditService = AuditServiceFactory.create();
-        GatewayClient gatewayClient = GatewayClientFactory.create();
-        SecurityContext securityContext = SecurityContextProvider.provider(environment).get();
-
         EmailNotificationServiceRegister emailNotificationServiceRegister = new EmailNotificationServiceRegister();
-        EmailNotificationService notificationService = emailNotificationServiceRegister
-                .lookup(EmailNotificationType.SEND_GRID);
 
         PublishService publishService = PublishServiceBuilder.builder()
-                .withArticleDao(articleDao)
-                .withAuditService(auditService)
-                .withSecurityContext(securityContext)
-                .withGatewayClient(gatewayClient)
-                .withNotificationService(notificationService)
+                .withArticleDao(new ArticleDao())
+                .withAuditService(AuditServiceFactory.create())
+                .withSecurityContext(SecurityContextProvider.provider(environment).get())
+                .withGatewayClient(GatewayClientFactory.create())
+                .withNotificationService(emailNotificationServiceRegister.lookup(EmailNotificationType.SEND_GRID))
                 .build();
 
         final ResourceConfig rc = getResourceConfig(publishService);
