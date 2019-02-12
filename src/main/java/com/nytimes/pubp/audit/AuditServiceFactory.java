@@ -2,6 +2,7 @@ package com.nytimes.pubp.audit;
 
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
+import com.nytimes.pubp.audit.impl.DefaultAuditService;
 
 import java.util.Optional;
 

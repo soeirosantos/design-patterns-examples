@@ -1,8 +1,9 @@
-package com.nytimes.pubp.audit;
+package com.nytimes.pubp.audit.impl;
 
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.Key;
+import com.nytimes.pubp.audit.AuditService;
 import com.nytimes.pubp.audit.exception.AuditException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

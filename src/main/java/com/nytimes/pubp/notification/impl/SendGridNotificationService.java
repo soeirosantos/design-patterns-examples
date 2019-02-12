@@ -1,5 +1,6 @@
-package com.nytimes.pubp.notification;
+package com.nytimes.pubp.notification.impl;
 
+import com.nytimes.pubp.notification.EmailNotificationService;
 import com.nytimes.pubp.notification.exception.NotificationException;
 import com.sendgrid.SendGrid;
 import org.slf4j.Logger;

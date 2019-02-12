@@ -1,4 +1,4 @@
-package com.nytimes.pubp.gateway;
+package com.nytimes.pubp.gateway.impl;
 
 import com.nytimes.pubp.articles.domain.Article;
 import com.nytimes.pubp.gateway.exception.GatewayClientException;

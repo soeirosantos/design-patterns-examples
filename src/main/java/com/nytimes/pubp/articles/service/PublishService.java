@@ -7,7 +7,7 @@ import com.nytimes.pubp.articles.service.exception.InvalidArticleException;
 import com.nytimes.pubp.articles.service.exception.PublishException;
 import com.nytimes.pubp.audit.AuditService;
 import com.nytimes.pubp.audit.exception.AuditException;
-import com.nytimes.pubp.gateway.GatewayClient;
+import com.nytimes.pubp.gateway.impl.GatewayClient;
 import com.nytimes.pubp.gateway.exception.GatewayClientException;
 import com.nytimes.pubp.notification.EmailNotificationService;
 import com.nytimes.pubp.notification.exception.NotificationException;

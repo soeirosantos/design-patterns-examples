@@ -8,7 +8,7 @@ import com.nytimes.pubp.articles.dao.ArticleDao;
 import com.nytimes.pubp.articles.service.PublishService;
 import com.nytimes.pubp.audit.AuditService;
 import com.nytimes.pubp.audit.AuditServiceFactory;
-import com.nytimes.pubp.gateway.GatewayClient;
+import com.nytimes.pubp.gateway.impl.GatewayClient;
 import com.nytimes.pubp.gateway.GatewayClientFactory;
 import com.nytimes.pubp.notification.EmailNotificationService;
 import com.nytimes.pubp.notification.EmailNotificationServiceRegister;

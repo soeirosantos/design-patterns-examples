@@ -1,5 +1,8 @@
 package com.nytimes.pubp.notification;
 
+import com.nytimes.pubp.notification.impl.NoopEmailNotificationService;
+import com.nytimes.pubp.notification.impl.SendGridNotificationService;
+
 import java.util.HashMap;
 import java.util.Map;
 

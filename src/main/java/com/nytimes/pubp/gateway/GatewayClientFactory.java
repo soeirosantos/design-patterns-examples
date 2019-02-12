@@ -1,5 +1,7 @@
 package com.nytimes.pubp.gateway;
 
+import com.nytimes.pubp.gateway.impl.GatewayClient;
+
 import java.util.Optional;
 
 public class GatewayClientFactory {

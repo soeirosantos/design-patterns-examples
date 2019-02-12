@@ -1,5 +1,6 @@
-package com.nytimes.pubp.notification;
+package com.nytimes.pubp.notification.impl;
 
+import com.nytimes.pubp.notification.EmailNotificationService;
 import com.nytimes.pubp.notification.exception.NotificationException;
 
 public class NoopEmailNotificationService implements EmailNotificationService {
