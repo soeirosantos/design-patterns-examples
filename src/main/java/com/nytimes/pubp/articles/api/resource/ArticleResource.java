@@ -4,6 +4,7 @@ package com.nytimes.pubp.articles.api.resource;
 import com.nytimes.pubp.articles.api.error.ApiError;
 import com.nytimes.pubp.articles.domain.Article;
 import com.nytimes.pubp.articles.service.PublishService;
+import com.nytimes.pubp.articles.service.ServiceType;
 import com.nytimes.pubp.articles.service.exception.InvalidArticleException;
 import com.nytimes.pubp.articles.service.exception.PublishException;
 import org.slf4j.Logger;
@@ -34,7 +35,7 @@ public class ArticleResource {
     public Response publish(Article article) {
         try {
 
-            publishService.publish(article);
+            publishService.publish(article, ServiceType.PUBLISH);
             return Response.ok(article).build();
         } catch (InvalidArticleException e) {
 
@@ -51,7 +52,7 @@ public class ArticleResource {
     public Response unpublish(Article article) {
         try {
 
-            publishService.unpublish(article);
+            publishService.publish(article, ServiceType.UNPUBLISH);
             return Response.ok().build();
         } catch (InvalidArticleException e) {
 
@@ -69,7 +70,7 @@ public class ArticleResource {
     public Response preview(Article article) {
         try {
 
-            publishService.preview(article);
+            publishService.publish(article, ServiceType.PREVIEW);
             return Response.ok(article).build();
         } catch (InvalidArticleException e) {
 

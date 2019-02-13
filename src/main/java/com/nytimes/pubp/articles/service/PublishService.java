@@ -16,12 +16,15 @@ import com.nytimes.pubp.notification.EmailNotificationService;
 import com.nytimes.pubp.notification.exception.NotificationException;
 import com.nytimes.pubp.security.SecurityContext;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class PublishService {
 
     private final ArticleDao articleDao;
     private final AuditService auditService;
     private final SecurityContext securityContext;
-    private final GatewayClient gatewayClient;
+    private final Map<ServiceType, GatewayClientExecutor> gatewayClient = new HashMap<>();
     private final EmailNotificationService notificationService;
 
     PublishService(ArticleDao articleDao, AuditService auditService, SecurityContext securityContext,
@@ -29,30 +32,19 @@ public class PublishService {
         this.articleDao = articleDao;
         this.auditService = auditService;
         this.securityContext = securityContext;
-        this.gatewayClient = gatewayClient;
         this.notificationService = notificationService;
+
+        this.gatewayClient.put(ServiceType.PUBLISH, gatewayClient::publish);
+        this.gatewayClient.put(ServiceType.UNPUBLISH, gatewayClient::unpublish);
     }
 
-    public void publish(Article article) throws PublishException {
+    public void publish(Article article, ServiceType serviceType) throws PublishException {
 
-        PublishStep flow = PublishFlow.getFlow(ServiceType.PUBLISH);
+        PublishStep flow = PublishFlow.getFlow(serviceType);
         PublishContext context = PublishContext.create(article);
         flow.execute(context);
 
-        publish(article, ServiceType.PUBLISH, gatewayClient::publish);
-    }
-
-    public void unpublish(Article article) throws PublishException {
-
-        PublishStep flow = PublishFlow.getFlow(ServiceType.UNPUBLISH);
-        PublishContext context = PublishContext.create(article);
-        flow.execute(context);
-
-        publish(article, ServiceType.UNPUBLISH, gatewayClient::unpublish);
-    }
-
-    public void preview(Article article) throws PublishException {
-        //TODO to be implemented
+        publish(article, serviceType, gatewayClient.get(serviceType));
     }
 
     private void publish(Article article, ServiceType serviceType, GatewayClientExecutor gatewayClientExecutor)
