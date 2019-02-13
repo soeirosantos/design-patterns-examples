@@ -9,6 +9,7 @@ import com.nytimes.pubp.articles.service.flow.PublishStep;
 import com.nytimes.pubp.articles.service.flow.impl.PublishContext;
 import com.nytimes.pubp.audit.AuditService;
 import com.nytimes.pubp.audit.exception.AuditException;
+import com.nytimes.pubp.gateway.GatewayClientExecutor;
 import com.nytimes.pubp.gateway.exception.GatewayClientException;
 import com.nytimes.pubp.gateway.impl.GatewayClient;
 import com.nytimes.pubp.notification.EmailNotificationService;
@@ -16,8 +17,6 @@ import com.nytimes.pubp.notification.exception.NotificationException;
 import com.nytimes.pubp.security.SecurityContext;
 
 public class PublishService {
-
-    private static final String NYT_ARTICLE_SCHEME_PATH = "nyt://article/";
 
     private final ArticleDao articleDao;
     private final AuditService auditService;
@@ -77,4 +76,23 @@ public class PublishService {
     public void preview(Article article) throws PublishException {
         //TODO to be implemented
     }
+
+    private void publish(Article article, ServiceType serviceType, GatewayClientExecutor gatewayClientExecutor)
+            throws PublishException {
+        try {
+
+            articleDao.save(article);
+            gatewayClientExecutor.execute(article);
+            auditService.log(article.getUri(), securityContext.getCurrentUser(), serviceType.name());
+            notificationService.notify(article.getUri(), serviceType.name());
+
+        } catch (DaoException | GatewayClientException | AuditException | NotificationException e) {
+
+            throw new PublishException("Error executing " + serviceType.name() + " for article", e);
+
+        }
+    }
 }
+
+
+
