@@ -1,19 +1,20 @@
 package com.nytimes.pubp.notification;
 
+import com.nytimes.pubp.config.impl.AppConfig;
 import com.nytimes.pubp.notification.impl.NoopEmailNotificationService;
 import com.nytimes.pubp.notification.impl.SendGridNotificationService;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class EmailNotificationServiceRegister {
+public final class EmailNotificationServiceRegister {
 
     public enum EmailNotificationType {SEND_GRID, NOOP}
 
-    private Map<EmailNotificationType, EmailNotificationService> notificationServices = new HashMap<>();
+    private final Map<EmailNotificationType, EmailNotificationService> notificationServices = new HashMap<>();
 
-    {
-        notificationServices.put(EmailNotificationType.SEND_GRID, SendGridNotificationService.create());
+    public EmailNotificationServiceRegister(AppConfig config) {
+        notificationServices.put(EmailNotificationType.SEND_GRID, SendGridNotificationService.create(config));
         notificationServices.put(EmailNotificationType.NOOP, new NoopEmailNotificationService());
     }
 

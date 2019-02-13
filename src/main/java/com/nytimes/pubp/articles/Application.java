@@ -7,14 +7,12 @@ import com.nytimes.pubp.articles.api.resource.ArticleResource;
 import com.nytimes.pubp.articles.dao.ArticleDao;
 import com.nytimes.pubp.articles.service.PublishService;
 import com.nytimes.pubp.articles.service.PublishServiceBuilder;
-import com.nytimes.pubp.audit.AuditService;
 import com.nytimes.pubp.audit.AuditServiceFactory;
+import com.nytimes.pubp.config.AppConfigLoader;
+import com.nytimes.pubp.config.impl.AppConfig;
 import com.nytimes.pubp.gateway.GatewayClientFactory;
-import com.nytimes.pubp.gateway.impl.GatewayClient;
-import com.nytimes.pubp.notification.EmailNotificationService;
 import com.nytimes.pubp.notification.EmailNotificationServiceRegister;
 import com.nytimes.pubp.notification.EmailNotificationServiceRegister.EmailNotificationType;
-import com.nytimes.pubp.security.SecurityContext;
 import com.nytimes.pubp.security.SecurityContextProvider;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -26,8 +24,6 @@ import java.net.URI;
 
 public class Application {
 
-    private static final String BASE_URL = "http://localhost:8080/publisher";
-
     public static void main(String[] args) throws Exception {
         final HttpServer server = createServer();
         Runtime.getRuntime().addShutdownHook(new Thread(server::shutdownNow));
@@ -38,19 +34,22 @@ public class Application {
 
     private static HttpServer createServer() {
 
-        String environment = System.getenv("environment");
-        EmailNotificationServiceRegister emailNotificationServiceRegister = new EmailNotificationServiceRegister();
+        AppConfigLoader loader = AppConfigLoader.defaultLoader();
+        AppConfig config = loader.load();
+
+        EmailNotificationServiceRegister emailNotificationServiceRegister =
+                new EmailNotificationServiceRegister(config);
 
         PublishService publishService = PublishServiceBuilder.builder()
                 .withArticleDao(new ArticleDao())
-                .withAuditService(AuditServiceFactory.create())
-                .withSecurityContext(SecurityContextProvider.provider(environment).get())
-                .withGatewayClient(GatewayClientFactory.create())
+                .withAuditService(AuditServiceFactory.create(config))
+                .withSecurityContext(SecurityContextProvider.provider(config.getEnvironment()).get())
+                .withGatewayClient(GatewayClientFactory.create(config))
                 .withNotificationService(emailNotificationServiceRegister.lookup(EmailNotificationType.SEND_GRID))
                 .build();
 
         final ResourceConfig rc = getResourceConfig(publishService);
-        return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URL), rc, false);
+        return GrizzlyHttpServerFactory.createHttpServer(URI.create(config.getBaseUrl()), rc, false);
     }
 
     private static ResourceConfig getResourceConfig(PublishService publishService) {

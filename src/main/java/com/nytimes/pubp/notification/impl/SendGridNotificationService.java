@@ -1,5 +1,6 @@
 package com.nytimes.pubp.notification.impl;
 
+import com.nytimes.pubp.config.impl.AppConfig;
 import com.nytimes.pubp.notification.EmailNotificationService;
 import com.nytimes.pubp.notification.exception.NotificationException;
 import com.sendgrid.SendGrid;
@@ -22,8 +23,8 @@ public class SendGridNotificationService implements EmailNotificationService {
         LOGGER.info("Sending email notification {} {}", uri, service);
     }
 
-    public static EmailNotificationService create() {
-        SendGrid sendGrid = new SendGrid(System.getenv("SENDGRID_API_KEY"));
+    public static EmailNotificationService create(AppConfig config) {
+        SendGrid sendGrid = new SendGrid(config.getSendGridApiKey());
         return new SendGridNotificationService(sendGrid);
     }
 }
