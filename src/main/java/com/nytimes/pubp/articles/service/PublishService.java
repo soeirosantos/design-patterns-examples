@@ -39,18 +39,7 @@ public class PublishService {
         PublishContext context = PublishContext.create(article);
         flow.execute(context);
 
-        try {
-
-            articleDao.save(article);
-            gatewayClient.publish(article);
-            auditService.log(article.getUri(), securityContext.getCurrentUser(), "PUBLISH");
-            notificationService.notify(article.getUri(), "PUBLISH");
-
-        } catch (DaoException | GatewayClientException | AuditException | NotificationException e) {
-
-            throw new PublishException("Error publishing article", e);
-
-        }
+        publish(article, ServiceType.PUBLISH, gatewayClient::publish);
     }
 
     public void unpublish(Article article) throws PublishException {
@@ -59,18 +48,7 @@ public class PublishService {
         PublishContext context = PublishContext.create(article);
         flow.execute(context);
 
-        try {
-
-            articleDao.save(article);
-            gatewayClient.unpublish(article);
-            auditService.log(article.getUri(), securityContext.getCurrentUser(), "UNPUBLISH");
-            notificationService.notify(article.getUri(), "UNPUBLISH");
-
-        } catch (DaoException | GatewayClientException | AuditException | NotificationException e) {
-
-            throw new PublishException("Error unpublishing article", e);
-
-        }
+        publish(article, ServiceType.UNPUBLISH, gatewayClient::unpublish);
     }
 
     public void preview(Article article) throws PublishException {
