@@ -5,8 +5,6 @@ import com.nytimes.pubp.articles.service.exception.PublishException;
 import com.nytimes.pubp.articles.service.flow.PublishStep;
 import com.nytimes.pubp.articles.service.flow.impl.PublishContext;
 
-import java.util.Optional;
-
 public class ValidateArticle implements PublishStep {
 
     private PublishStep next;
@@ -23,9 +21,11 @@ public class ValidateArticle implements PublishStep {
         if (context.hasErrors()) {
             throw new InvalidArticleException(context.getErrors());
         }
+        executeNext(context);
+    }
 
-        if (Optional.ofNullable(next).isPresent()) {
-            next.execute(context);
-        }
+    @Override
+    public PublishStep getNext() {
+        return next;
     }
 }

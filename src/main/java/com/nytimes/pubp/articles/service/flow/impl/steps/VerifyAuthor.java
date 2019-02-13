@@ -5,8 +5,6 @@ import com.nytimes.pubp.articles.service.exception.PublishException;
 import com.nytimes.pubp.articles.service.flow.PublishStep;
 import com.nytimes.pubp.articles.service.flow.impl.PublishContext;
 
-import java.util.Optional;
-
 public class VerifyAuthor implements PublishStep {
 
     private PublishStep next;
@@ -24,9 +22,11 @@ public class VerifyAuthor implements PublishStep {
         if (article.getAuthor() == null || article.getAuthor().isBlank()) {
             context.addError("Author cannot be empty");
         }
+        executeNext(context);
+    }
 
-        if (Optional.ofNullable(next).isPresent()) {
-            next.execute(context);
-        }
+    @Override
+    public PublishStep getNext() {
+        return next;
     }
 }

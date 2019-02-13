@@ -6,7 +6,6 @@ import com.nytimes.pubp.articles.service.flow.PublishStep;
 import com.nytimes.pubp.articles.service.flow.impl.PublishContext;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 public class VerifyPublishedAt implements PublishStep {
 
@@ -25,9 +24,11 @@ public class VerifyPublishedAt implements PublishStep {
         if (article.getPublishedAt() == null || article.getPublishedAt().isAfter(LocalDateTime.now())) {
             context.addError("Publish date/time cannot be empty or a future date");
         }
+        executeNext(context);
+    }
 
-        if (Optional.ofNullable(next).isPresent()) {
-            next.execute(context);
-        }
+    @Override
+    public PublishStep getNext() {
+        return next;
     }
 }

@@ -4,7 +4,6 @@ import com.nytimes.pubp.articles.service.exception.PublishException;
 import com.nytimes.pubp.articles.service.flow.PublishStep;
 import com.nytimes.pubp.articles.service.flow.impl.PublishContext;
 
-import java.util.Optional;
 import java.util.UUID;
 
 public class SetUri implements PublishStep {
@@ -23,9 +22,11 @@ public class SetUri implements PublishStep {
     @Override
     public void execute(PublishContext context) throws PublishException {
         context.getArticle().setUri(NYT_ARTICLE_SCHEME_PATH + UUID.randomUUID().toString());
+        executeNext(context);
+    }
 
-        if (Optional.ofNullable(next).isPresent()) {
-            next.execute(context);
-        }
+    @Override
+    public PublishStep getNext() {
+        return next;
     }
 }

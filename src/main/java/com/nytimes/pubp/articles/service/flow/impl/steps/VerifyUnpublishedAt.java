@@ -6,7 +6,6 @@ import com.nytimes.pubp.articles.service.flow.PublishStep;
 import com.nytimes.pubp.articles.service.flow.impl.PublishContext;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 public class VerifyUnpublishedAt implements PublishStep {
 
@@ -25,9 +24,11 @@ public class VerifyUnpublishedAt implements PublishStep {
         if (article.getUnpublishedAt() == null || article.getUnpublishedAt().isAfter(LocalDateTime.now())) {
             context.addError("Unpublish date/time cannot be empty or a future date");
         }
+        executeNext(context);
+    }
 
-        if (Optional.ofNullable(next).isPresent()) {
-            next.execute(context);
-        }
+    @Override
+    public PublishStep getNext() {
+        return next;
     }
 }
