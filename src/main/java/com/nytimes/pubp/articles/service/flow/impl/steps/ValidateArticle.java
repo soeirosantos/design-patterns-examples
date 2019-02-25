@@ -17,11 +17,10 @@ public class ValidateArticle implements PublishStep {
     }
 
     @Override
-    public void execute(PublishContext context) throws PublishException {
+    public void doExecute(PublishContext context) throws PublishException {
         if (context.hasErrors()) {
             throw new InvalidArticleException(context.getErrors());
         }
-        executeNext(context);
     }
 
     @Override

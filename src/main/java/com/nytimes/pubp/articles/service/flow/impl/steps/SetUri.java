@@ -20,9 +20,8 @@ public class SetUri implements PublishStep {
     }
 
     @Override
-    public void execute(PublishContext context) throws PublishException {
+    public void doExecute(PublishContext context) throws PublishException {
         context.getArticle().setUri(NYT_ARTICLE_SCHEME_PATH + UUID.randomUUID().toString());
-        executeNext(context);
     }
 
     @Override
