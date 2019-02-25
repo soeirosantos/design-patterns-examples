@@ -19,7 +19,7 @@ public class VerifyPublishedAt implements PublishStep {
     }
 
     @Override
-    public void executeNext(PublishContext context) throws PublishException {
+    public void doExecute(PublishContext context) throws PublishException {
         Article article = context.getArticle();
         if (article.getPublishedAt() == null || article.getPublishedAt().isAfter(LocalDateTime.now())) {
             context.addError("Publish date/time cannot be empty or a future date");

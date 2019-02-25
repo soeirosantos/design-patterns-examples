@@ -17,7 +17,7 @@ public class VerifyAuthor implements PublishStep {
     }
 
     @Override
-    public void executeNext(PublishContext context) throws PublishException {
+    public void doExecute(PublishContext context) throws PublishException {
         Article article = context.getArticle();
         if (article.getAuthor() == null || article.getAuthor().isBlank()) {
             context.addError("Author cannot be empty");

@@ -17,7 +17,7 @@ public class VerifyHeadline implements PublishStep {
     }
 
     @Override
-    public void executeNext(PublishContext context) throws PublishException {
+    public void doExecute(PublishContext context) throws PublishException {
         Article article = context.getArticle();
         if (article.getHeadline() == null || article.getHeadline().isBlank()) {
             context.addError("Headline cannot be empty");

@@ -7,12 +7,12 @@ import java.util.Optional;
 
 public interface PublishStep {
 
-    void executeNext(PublishContext context) throws PublishException;
+    void doExecute(PublishContext context) throws PublishException;
 
     PublishStep getNext();
 
     default void execute(PublishContext context) throws PublishException {
-        executeNext(context);
+        doExecute(context);
         if (Optional.ofNullable(getNext()).isPresent()) {
             getNext().execute(context);
         }

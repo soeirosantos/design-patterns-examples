@@ -17,7 +17,7 @@ public class VerifyUri implements PublishStep {
     }
 
     @Override
-    public void executeNext(PublishContext context) throws PublishException {
+    public void doExecute(PublishContext context) throws PublishException {
         Article article = context.getArticle();
         if (article.getUri() == null || article.getUri().isBlank()) {
             context.addError("URI cannot be empty");
