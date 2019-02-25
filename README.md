@@ -2,7 +2,7 @@
 
 This is the sample code used for a Design Patterns talk.
 
-To follow tha changes you start at the tag `git checkout 0-raw` and move through the tags:
+To use this repo and follow the changes you start at the tag `git checkout 0-raw` and move through the tags:
 
 * `git checkout 1-object-creation`
 * `git checkout 2-builder`
