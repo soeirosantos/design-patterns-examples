@@ -17,12 +17,11 @@ public class VerifyAuthor implements PublishStep {
     }
 
     @Override
-    public void execute(PublishContext context) throws PublishException {
+    public void executeNext(PublishContext context) throws PublishException {
         Article article = context.getArticle();
         if (article.getAuthor() == null || article.getAuthor().isBlank()) {
             context.addError("Author cannot be empty");
         }
-        executeNext(context);
     }
 
     @Override

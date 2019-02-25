@@ -19,12 +19,11 @@ public class VerifyUnpublishedAt implements PublishStep {
     }
 
     @Override
-    public void execute(PublishContext context) throws PublishException {
+    public void executeNext(PublishContext context) throws PublishException {
         Article article = context.getArticle();
         if (article.getUnpublishedAt() == null || article.getUnpublishedAt().isAfter(LocalDateTime.now())) {
             context.addError("Unpublish date/time cannot be empty or a future date");
         }
-        executeNext(context);
     }
 
     @Override

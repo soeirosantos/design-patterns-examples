@@ -18,9 +18,8 @@ public class SetModifiedAt implements PublishStep {
     }
 
     @Override
-    public void execute(PublishContext context) throws PublishException {
+    public void executeNext(PublishContext context) throws PublishException {
         context.getArticle().setModifiedAt(LocalDateTime.now());
-        executeNext(context);
     }
 
     @Override
